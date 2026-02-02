@@ -1,30 +1,27 @@
 <Solution>
-  <Folder Name="/Modules/" />
-  <Folder Name="/Modules/Auth/">
-    <Project Path="Application/Auth.Application.csproj" Id="b915b0ca-0071-4771-879a-bddbb5632c9b" />
-    <Project Path="Domain/Auth.Domain.csproj" Id="ab6399df-dc48-45c5-bc2a-45be160b8077" />
-    <Project Path="Infra/Auth.Infra.csproj" Id="63c0463b-27ed-4d50-81fc-335d6f4bd8ee" />
+  <Folder Name="/Modules/">
+    <Project Path="Modules/Basket/Basket.csproj" />
+    <Project Path="Modules/Contracts/Contracts.csproj" />
   </Folder>
-  <Folder Name="/Modules/Basket/">
-    <Project Path="Basket/Basket.csproj" Id="dd07cb5d-2788-4bf2-96fd-82fcb52050ea" />
+  <Folder Name="/Modules/Auth/">
+    <Project Path="Modules/Auth/Auth.Application/Auth.Application.csproj" />
+    <Project Path="Modules/Auth/Auth.Domain/Auth.Domain.csproj" />
+    <Project Path="Modules/Auth/Auth.Infra/Auth.Infra.csproj" />
   </Folder>
   <Folder Name="/Modules/Catalog/">
-    <Project Path="Catalog.Application/Catalog.Application.csproj" Id="06e1ad8d-d581-4036-847e-8076c33d9f34" />
-    <Project Path="Catalog.Domain/Catalog.Domain.csproj" Id="41895fff-aeb9-4a2a-87eb-8e7d2e21a209" />
-    <Project Path="Catalog.Infra/Catalog.Infra.csproj" Id="db7f1aa7-74be-4641-bb5e-a92eb9595966" />
+    <Project Path="Modules/Catalog/Catalog.Application/Catalog.Application.csproj" />
+    <Project Path="Modules/Catalog/Catalog.Domain/Catalog.Domain.csproj" />
+    <Project Path="Modules/Catalog/Catalog.Infra/Catalog.Infra.csproj" />
   </Folder>
   <Folder Name="/Modules/Order/">
-    <Project Path="Order.Application/Order.Application.csproj" Id="70dada09-cdf1-4edd-b36b-683a8a86a9c3" />
-    <Project Path="Order.Domain/Order.Domain.csproj" Id="75e767fe-a338-476e-8052-bddf76ae0271" />
-    <Project Path="Order.Infra/Order.Infra.csproj" Id="9e21ae26-88b0-4dab-816a-85bcbfa413a1" />
+    <Project Path="Modules/Order/Order.Application/Order.Application.csproj" />
+    <Project Path="Modules/Order/Order.Domain/Order.Domain.csproj" />
+    <Project Path="Modules/Order/Order.Infra/Order.Infra.csproj" />
   </Folder>
   <Folder Name="/Modules/Payment/">
-    <Project Path="Payment.Application/Payment.Application.csproj" Id="904b799b-c6df-4c0a-a7d1-8db3f3d5a3be" />
-    <Project Path="Payment.Domain/Payment.Domain.csproj" Id="12e10a2c-8fbe-48eb-b3ea-d9bc256e33d6" />
-    <Project Path="Payment.Infra/Payment.Infra.csproj" Id="c10c04bd-4b44-4b8f-940e-0edc9223aaa1" />
-  </Folder>
-  <Folder Name="/Modules/Shared/">
-    <Project Path="Contracts/Contracts.csproj" Id="637f0ec7-fc2f-413f-9657-40a42aee1604" />
+    <Project Path="Modules/Payment/Payment.Application/Payment.Application.csproj" />
+    <Project Path="Modules/Payment/Payment.Domain/Payment.Domain.csproj" />
+    <Project Path="Modules/Payment/Payment.Infra/Payment.Infra.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />

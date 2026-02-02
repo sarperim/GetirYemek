@@ -16,9 +16,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Application\Auth.Application.csproj" />
-    <ProjectReference Include="..\Domain\Auth.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
