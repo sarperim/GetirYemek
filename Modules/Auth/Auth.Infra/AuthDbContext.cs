@@ -16,6 +16,8 @@ namespace Auth.Infra
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+
+            modelBuilder.HasDefaultSchema("Auth");
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthDbContext).Assembly);
 
             modelBuilder.Entity<User>()
