@@ -8,14 +8,30 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="MassTransit" Version="9.0.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="9.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MongoDB.Driver" Version="3.6.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.12.36" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Auth.Presentation\" />
     <Folder Include="Controllers\Catalog.Presentation\" />
     <Folder Include="Controllers\Payment.Presentation\" />
     <Folder Include="Controllers\Order.Presentation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\Auth\Auth.Infra\Auth.Infra.csproj" />
+    <ProjectReference Include="..\Modules\Basket\Basket.csproj" />
+    <ProjectReference Include="..\Modules\Catalog\Catalog.Infra\Catalog.Infra.csproj" />
+    <ProjectReference Include="..\Modules\Order\Order.Infra\Order.Infra.csproj" />
+    <ProjectReference Include="..\Modules\Payment\Payment.Infra\Payment.Infra.csproj" />
   </ItemGroup>
 
 </Project>

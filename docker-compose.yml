@@ -13,5 +13,30 @@ services:
       - mssql_data:/var/opt/mssql
     restart: always
 
+  rabbitmq:
+    image: masstransit/rabbitmq:latest
+    container_name: getir-rabbitmq
+    ports:
+      - "5672:5672"   # Communication port (App -> RabbitMQ)
+      - "15672:15672" # Management UI (Browser -> RabbitMQ)
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  mongodb:
+    image: mongo:latest
+    container_name: getir-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=guest
+    volumes:
+      - mongo_data:/data/db
+
 volumes:
   mssql_data:
+  rabbitmq_data:
+  mongo_data: # Ensure this is declared at the bottom!

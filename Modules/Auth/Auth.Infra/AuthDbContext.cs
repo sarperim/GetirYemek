@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MassTransit;
 
 namespace Auth.Infra
 {
@@ -19,6 +20,10 @@ namespace Auth.Infra
 
             modelBuilder.HasDefaultSchema("Auth");
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthDbContext).Assembly);
+
+            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
+            modelBuilder.AddOutboxStateEntity();
 
             modelBuilder.Entity<User>()
                  .HasMany(u => u.Addresses)

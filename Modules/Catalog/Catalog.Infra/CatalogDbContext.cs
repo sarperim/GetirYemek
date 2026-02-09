@@ -1,4 +1,5 @@
 ﻿using Catalog.Domain.Entities;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,11 @@ namespace Catalog.Infra
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            modelBuilder.HasDefaultSchema("Catalog");
+
+            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
+            modelBuilder.AddOutboxStateEntity();
+
 
            modelBuilder.Entity<Restaurant>(entity =>
             {

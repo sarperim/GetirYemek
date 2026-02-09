@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Order.Domain.Entities;
 using Order.Domain;
+using MassTransit;
 
 namespace Order.Infra
 {
@@ -21,6 +22,11 @@ namespace Order.Infra
         {
             // 1. Critical: Schema Isolation
             modelBuilder.HasDefaultSchema("Ordering");
+
+            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
+            modelBuilder.AddOutboxStateEntity();
+
 
             // 2. Order Configuration
             modelBuilder.Entity<SaleOrder>(entity =>

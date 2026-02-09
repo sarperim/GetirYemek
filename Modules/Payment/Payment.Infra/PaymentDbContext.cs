@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Payment.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,12 @@ namespace Payment.Infra
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("Payment");
+       
+            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
+            modelBuilder.AddOutboxStateEntity();
+
+
             modelBuilder.Entity<Transaction>(entity =>
             {
                 entity.Property(e => e.Amount).HasPrecision(18, 2);
