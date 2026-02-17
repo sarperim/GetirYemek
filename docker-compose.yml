@@ -39,4 +39,4 @@ services:
 volumes:
   mssql_data:
   rabbitmq_data:
-  mongo_data: # Ensure this is declared at the bottom!
+  mongo_data: 
