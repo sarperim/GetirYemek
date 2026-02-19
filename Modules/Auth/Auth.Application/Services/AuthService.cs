@@ -134,7 +134,8 @@ namespace Auth.Application.Services
         {
             var refreshToken = GenerateRefreshToken();
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1);
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            _userRepository.Update(user);
             await _uow.SaveChangesAsync();
             return refreshToken;
         }

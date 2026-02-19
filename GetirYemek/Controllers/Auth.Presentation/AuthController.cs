@@ -26,6 +26,32 @@ namespace GetirYemek.Controllers.Auth.Presentation
         public async Task<IActionResult> Register(RegisterRequest request)
         {
             var response = await _authService.RegisterAsync(request);
+            if(response == null)
+            {
+                return BadRequest(new { message = "Email is already in use or registration failed." });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginRequest request)
+        {
+            var response = await _authService.LoginAsync(request);
+            if (response == null)
+            {
+                return Unauthorized(new { message = "Invalid email or password." });
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("Refresh-Token")]
+        public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
+        {
+            var response = await _authService.RefreshToken(request);
+            if (response == null)
+            {
+                return Unauthorized(new { message = "Invalid or expired refresh token." });
+            }
             return Ok(response);
         }
     }
