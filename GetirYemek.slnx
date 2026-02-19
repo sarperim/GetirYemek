@@ -25,7 +25,6 @@
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
-    <File Path="docker-replace-compose.yml" />
     <File Path="init.sql" />
   </Folder>
   <Project Path="GetirYemek/GetirYemek.csproj" />

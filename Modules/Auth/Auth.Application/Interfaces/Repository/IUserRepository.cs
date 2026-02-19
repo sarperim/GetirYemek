@@ -8,6 +8,7 @@ namespace Auth.Application.Interfaces.Repository
     public interface IUserRepository : IGenericRepository<User>
     {
         Task<User?> GetByEmailAsync(string email);
+        Task<User?> GetByRefreshTokenAsync(string email);
         Task<bool> IsEmailUniqueAsync(string email);
         Task<User?> GetByIdWithAddressAsync(Guid id);
     }

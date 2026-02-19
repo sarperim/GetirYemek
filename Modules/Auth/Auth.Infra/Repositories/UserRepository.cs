@@ -20,8 +20,6 @@ namespace Auth.Infra.Repositories
 
         public void Add(User entity)
         {
-            // Just adds to the ChangeTracker. 
-            // The DB call happens when UnitOfWork.SaveChangesAsync() is called.
             _context.Users.Add(entity);
         }
 
@@ -53,6 +51,13 @@ namespace Auth.Infra.Repositories
             return await _context.Users
                 .AsNoTracking() // Optimization: Read-only query (faster)
                 .FirstOrDefaultAsync(u => u.Email == email);
+        }
+
+        public async Task<User?> GetByRefreshTokenAsync(string refreshToken)
+        {
+            return await _context.Users
+                .AsNoTracking() // Optimization: Read-only query (faster)
+                .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
         }
 
         public async Task<bool> IsEmailUniqueAsync(string email)

@@ -1,6 +1,8 @@
 using Auth.Application.Interfaces;
+using Auth.Application.Interfaces.Repository;
 using Auth.Application.Services;
 using Auth.Infra;
+using Auth.Infra.Repositories;
 using Basket.Consumer;
 using Catalog.Infra;
 using MassTransit;
@@ -19,7 +21,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IEventBus, MassTransitEventBus>();
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("ModularMonolithDb");
 
@@ -52,7 +55,7 @@ builder.Services.AddMassTransit(x =>
         o.UseSqlServer();
         o.UseBusOutbox(); 
     });
-
+/*
     x.AddEntityFrameworkOutbox<CatalogDbContext>(o =>
     {
         o.UseSqlServer();
@@ -70,7 +73,7 @@ builder.Services.AddMassTransit(x =>
         o.UseSqlServer();
         o.UseBusOutbox();
     });
-
+*/
 
     x.UsingRabbitMq((context, cfg) =>
     {

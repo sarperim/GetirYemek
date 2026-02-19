@@ -380,6 +380,7 @@ env/
 # Ignore the file with real keys
 appsettings.json
 appsettings.Development.json
+AppSettings.Json
 
 # But allow the example template so others know the structure
 !appsettings.Example.json
