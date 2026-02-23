@@ -85,13 +85,19 @@ namespace Auth.Application.Services
             var user = new User(request.Email, request.FirstName, request.LastName);
 
             user.PasswordHash = new PasswordHasher<User>().HashPassword(user, request.Password);
+
+            var refreshToken = GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
             _userRepository.Add(user);
+
             await _publishEndpoint.Publish<IUserCreated>(new
             {
                 UserId = user.Id
             });
-            var refreshToken = await GenerateAndSaveRefreshTokenAsync(user); // uow saves to db here
 
+            await _uow.SaveChangesAsync();
             return new AuthResponse
             {
                 AccessToken = CreateToken(user),

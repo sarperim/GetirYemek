@@ -4,9 +4,14 @@ using Auth.Application.Services;
 using Auth.Infra;
 using Auth.Infra.Repositories;
 using Basket.Consumer;
+using Basket.Infra;
 using Catalog.Infra;
+using GetirYemek.Middleware;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Order.Infra;
 using Payment.Infra;
@@ -19,6 +24,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
@@ -38,7 +45,9 @@ builder.Services.AddDbContext<PaymentDbContext>(options =>
 builder.Services.AddDbContext<CatalogDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-var mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb") ?? "mongodb://root:example@localhost:27017";
+BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+
+var mongoConnectionString = builder.Configuration.GetConnectionString("MongoDb") ?? "mongodb://root:guest@localhost:27017";
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(mongoConnectionString));
 
 builder.Services.AddScoped(sp =>
@@ -89,12 +98,20 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var database = scope.ServiceProvider.GetRequiredService<IMongoDatabase>();
+    await BasketIndexes.CreateIndexesAsync(database);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
