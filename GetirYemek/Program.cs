@@ -8,7 +8,9 @@ using Basket.Infra;
 using Catalog.Infra;
 using GetirYemek.Middleware;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
@@ -16,6 +18,7 @@ using MongoDB.Driver;
 using Order.Infra;
 using Payment.Infra;
 using Scalar.AspNetCore;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +33,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+builder.Services.AddScoped<Basket.Service.BasketService>();
 
 var connectionString = builder.Configuration.GetConnectionString("ModularMonolithDb");
 
@@ -96,6 +100,28 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+        ValidAudience = builder.Configuration["AppSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!))
+    };
+});
+
+
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -115,6 +141,7 @@ app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
