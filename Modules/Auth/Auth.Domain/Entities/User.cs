@@ -11,20 +11,23 @@ public class User
     public string LastName { get; set; }
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpiryTime { get; set; }
+    public UserRole Role { get; set; }
+    public bool IsActive { get; set; } = true;
+    public bool IsDeleted { get; set; } = false;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
 
     public IReadOnlyCollection<UserAddress> Addresses => _addresses.AsReadOnly();
 
     private User() { } 
 
-    public User(
-        string email,
-        string firstName,
-        string lastName)
+    public User(string email, string firstName, string lastName)
     {
         Id = Guid.NewGuid();
         Email = email;
         FirstName = firstName;
         LastName = lastName;
+        Role = UserRole.Customer;
     }
 
     public void AddAddress(UserAddress address)
@@ -44,4 +47,11 @@ public class User
         RefreshToken = null;
         RefreshTokenExpiryTime = null;
     }
+}
+
+public enum UserRole
+{
+    Customer = 0,
+    Business = 1,
+    Admin = 2
 }

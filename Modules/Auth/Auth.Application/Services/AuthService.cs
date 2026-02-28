@@ -1,4 +1,10 @@
-﻿using Auth.Application.Interfaces;
+﻿// ADD:
+// Result Pattern
+// ILogger
+// Change Role Endpoint
+// Email Confirmation
+
+using Auth.Application.Interfaces;
 using Auth.Application.Interfaces.Repository;
 using Auth.Domain.Entities;
 using Contracts.DTOs;
@@ -113,7 +119,8 @@ namespace Auth.Application.Services
         {
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.Name,user.FirstName),
-                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim(ClaimTypes.Role,user.Role.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("AppSettings:Token")));

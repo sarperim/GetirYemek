@@ -21,7 +21,7 @@ namespace Auth.Infra
             modelBuilder.HasDefaultSchema("Auth");
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthDbContext).Assembly);
 
-            modelBuilder.AddInboxStateEntity();
+            modelBuilder.AddInboxStateEntity(); //buna bak
             modelBuilder.AddOutboxMessageEntity();
             modelBuilder.AddOutboxStateEntity();
 
