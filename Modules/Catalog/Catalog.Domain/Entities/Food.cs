@@ -13,7 +13,13 @@ namespace Catalog.Domain.Entities
         public decimal Price { get; set; }
         public bool IsAvailable { get; set; }
 
-        public List<ProductModifier> ProductModifiers { get; private set; } = new();
+        private readonly List<ProductModifier> _productModifiers = new();
+        public IReadOnlyCollection<ProductModifier> ProductModifiers => _productModifiers.AsReadOnly();
+
+        public void AddProductModifier(ProductModifier modifier)
+        {
+            _productModifiers.Add(modifier);
+        }
 
     }
 }

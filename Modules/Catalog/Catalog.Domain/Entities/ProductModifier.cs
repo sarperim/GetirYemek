@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Catalog.Domain.Entities
+﻿namespace Catalog.Domain.Entities
 {
     public class ProductModifier
     {
@@ -12,7 +8,14 @@ namespace Catalog.Domain.Entities
         public bool IsRequired { get; set; }
         public int MinSelection { get; set; }
         public int MaxSelection { get; set; }
-        
-        public List<ModifierItem> ModifierItems { get; private set; } = new();
+
+        private readonly List<ModifierItem> _modifierItems = new();
+        public IReadOnlyCollection<ModifierItem> ModifierItems => _modifierItems.AsReadOnly();
+
+        public void AddModifierEvent(ModifierItem modifierItem)
+        {
+            _modifierItems.Add(modifierItem);
+        }
+
     }
 }

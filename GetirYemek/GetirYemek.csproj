@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Catalog.Presentation\" />
     <Folder Include="Controllers\Payment.Presentation\" />
-    <Folder Include="Controllers\Order.Presentation\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,7 +5,11 @@ using Auth.Infra;
 using Auth.Infra.Repositories;
 using Basket.Consumer;
 using Basket.Infra;
+using Catalog.Application.Interfaces;
+using Catalog.Application.Interfaces.Repository;
+using Catalog.Application.Services;
 using Catalog.Infra;
+using Catalog.Infra.Repositories;
 using GetirYemek.Middleware;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,6 +19,8 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Order.Application.Interfaces;
+using Order.Application.Services;
 using Order.Infra;
 using Payment.Infra;
 using Scalar.AspNetCore;
@@ -31,9 +37,20 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWorkAuth,UnitOfWorkAuth>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
+
+builder.Services.AddScoped<IUnitOfWorkCatalog,UnitOfWorkCatalog>();
+builder.Services.AddScoped<IRestaurantRepository,RestaurantRepository>();
+builder.Services.AddScoped<IFoodRepository,FoodRepository>();
+builder.Services.AddScoped<IRestaurantService,RestaurantService>();
+builder.Services.AddScoped<IFoodService,FoodService>();
+
 builder.Services.AddScoped<Basket.Service.BasketService>();
+
+builder.Services.AddScoped<IOrderService,OrderService>();
+
+
 
 var connectionString = builder.Configuration.GetConnectionString("ModularMonolithDb");
 
@@ -68,7 +85,7 @@ builder.Services.AddMassTransit(x =>
         o.UseSqlServer();
         o.UseBusOutbox(); 
     });
-/*
+
     x.AddEntityFrameworkOutbox<CatalogDbContext>(o =>
     {
         o.UseSqlServer();
@@ -80,7 +97,7 @@ builder.Services.AddMassTransit(x =>
         o.UseSqlServer();
         o.UseBusOutbox();
     });
-
+/*
     x.AddEntityFrameworkOutbox<PaymentDbContext>(o =>
     {
         o.UseSqlServer();

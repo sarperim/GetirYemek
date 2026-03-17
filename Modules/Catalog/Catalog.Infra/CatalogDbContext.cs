@@ -1,16 +1,13 @@
 ﻿using Catalog.Domain.Entities;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Catalog.Infra
 {
     public class CatalogDbContext : DbContext
     {
         public DbSet<Food> Foods { get; set; }
-        public DbSet<ProductModifier> ProductModifiers{ get; set; }
+        public DbSet<ProductModifier> ProductModifiers { get; set; }
         public DbSet<ModifierItem> ModifierItems { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<RestaurantWorkingHour> RestaurantWorkingHours { get; set; }
@@ -21,24 +18,26 @@ namespace Catalog.Infra
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.HasDefaultSchema("Catalog");
+            modelBuilder.HasDefaultSchema("Catalog");
 
             modelBuilder.AddInboxStateEntity();
             modelBuilder.AddOutboxMessageEntity();
             modelBuilder.AddOutboxStateEntity();
 
-
-           modelBuilder.Entity<Restaurant>(entity =>
+            // 1. Restaurant Configuration
+            modelBuilder.Entity<Restaurant>(entity =>
             {
                 entity.ToTable("Restaurants");
                 entity.HasKey(e => e.Id);
 
+                entity.Property(e => e.OwnerId).IsRequired();
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Description).HasMaxLength(500);
                 entity.Property(e => e.Address).HasMaxLength(200);
                 entity.Property(e => e.City).HasMaxLength(100);
                 entity.Property(e => e.Street).HasMaxLength(100);
 
+                entity.Property(e => e.DeliveryRadius).HasColumnType("decimal(18,2)");
             });
 
             modelBuilder.Entity<RestaurantWorkingHour>(entity =>
@@ -46,28 +45,28 @@ namespace Catalog.Infra
                 entity.ToTable("RestaurantWorkingHours");
                 entity.HasKey(e => e.Id);
 
-                // Relationship: One Restaurant -> Many WorkingHours
                 entity.HasOne<Restaurant>()
-                      .WithMany() // Assuming no navigation property in Restaurant class
+                      .WithMany(r => r.RestaurantWorkingHours) 
                       .HasForeignKey(e => e.RestaurantId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
+            // 3. Food Configuration
             modelBuilder.Entity<Food>(entity =>
             {
                 entity.ToTable("Foods");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.Price).HasColumnType("decimal(18,2)"); // Money precision
+                entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
 
-                // Relationship: One Restaurant -> Many Foods
                 entity.HasOne<Restaurant>()
-                      .WithMany()
+                      .WithMany(r => r.Foods) 
                       .HasForeignKey(e => e.RestaurantId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // 4. ProductModifier Configuration
             modelBuilder.Entity<ProductModifier>(entity =>
             {
                 entity.ToTable("ProductModifiers");
@@ -75,13 +74,13 @@ namespace Catalog.Infra
 
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
 
-                // Relationship: One Food -> Many Modifiers
                 entity.HasOne<Food>()
-                      .WithMany()
+                      .WithMany(f => f.ProductModifiers) // <-- Explicitly mapped!
                       .HasForeignKey(e => e.FoodId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // 5. ModifierItem Configuration
             modelBuilder.Entity<ModifierItem>(entity =>
             {
                 entity.ToTable("ModifierItems");
@@ -91,9 +90,9 @@ namespace Catalog.Infra
                 entity.Property(e => e.PriceAdjustment).HasColumnType("decimal(18,2)");
 
                 entity.HasOne<ProductModifier>()
-                      .WithMany()
+                      .WithMany(p => p.ModifierItems)
                       .HasForeignKey(e => e.ProductModifierId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
