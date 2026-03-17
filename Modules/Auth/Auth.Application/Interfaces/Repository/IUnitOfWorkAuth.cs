@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Auth.Application.Interfaces.Repository
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWorkAuth
     {
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

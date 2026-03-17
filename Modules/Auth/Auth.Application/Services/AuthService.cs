@@ -27,10 +27,10 @@ namespace Auth.Application.Services
     {
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IUserRepository _userRepository;
-        private readonly IUnitOfWork _uow;
+        private readonly IUnitOfWorkAuth _uow;
         private readonly IConfiguration _config;
         
-        public AuthService(IPublishEndpoint publishEndpoint, IUserRepository userRepository, IUnitOfWork unitOfWork, IConfiguration config)
+        public AuthService(IPublishEndpoint publishEndpoint, IUserRepository userRepository, IUnitOfWorkAuth unitOfWork, IConfiguration config)
         {
             _publishEndpoint = publishEndpoint;
             _userRepository = userRepository;

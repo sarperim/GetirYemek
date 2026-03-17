@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Auth.Infra.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWorkAuth : IUnitOfWorkAuth
     {
         private readonly AuthDbContext _context;
 
-        public UnitOfWork(AuthDbContext context)
+        public UnitOfWorkAuth(AuthDbContext context)
         {
             _context = context;
         }
