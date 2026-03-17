@@ -8,7 +8,7 @@ namespace Order.Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid OrderItemId { get; set; }
-        public string ModifierName { get; set; }
+        public string SnapshotModifierName { get; set; }
         public decimal Price { get; set; }
 
 

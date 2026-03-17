@@ -31,7 +31,6 @@ namespace Order.Infra
             // 2. Order Configuration
             modelBuilder.Entity<SaleOrder>(entity =>
             {
-                // Money Precision (Required for SQL Server)
                 entity.Property(e => e.TotalAmount).HasPrecision(18, 2);
 
                 // Relationship: Order -> Items
@@ -51,7 +50,7 @@ namespace Order.Infra
             // 3. OrderItem Configuration
             modelBuilder.Entity<OrderItem>(entity =>
             {
-                entity.Property(e => e.UnitPrice).HasPrecision(18, 2);
+                entity.Property(e => e.SnapshotUnitPrice).HasPrecision(18, 2);
 
                 // Relationship: OrderItem -> Modifiers
                 entity.HasMany(i => i.Modifiers)
